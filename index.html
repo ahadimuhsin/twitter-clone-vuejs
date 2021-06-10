@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css">
+    <!-- Vue JS CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+    <title>Simple Twitter Clone</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Register Account -->
+        <div class="card">
+            <i class="fab fa-twitter fa-lg fa-fw"></i>
+            <div class="register" v-if="!registered">
+                <h2>Buat Akun</h2>
+                <form v-on:submit.prevent="registerAccount">
+                    <div class="form_group">
+                        <label for="name">Name
+                        <span>{{ name.length + '/' + max_length }}</span>
+                    </label>
+                        <input type="text" id="name" v-model="name" required :maxlength="max_length">
+                    </div>
+
+                    <div class="form_group">
+                        <label for="email">Email
+                        <span>{{ email.length + '/' + max_length }}</span>
+                    </label>
+                        <input type="email" id="email" v-model="email" required :maxlength="max_length">
+                    </div>
+
+                    <div class="form_group">
+                        <label for="password">Password
+                        <span>{{ password.length + '/' + max_pass_length }}</span>
+                    </label>
+                        <input type="password" id="password" v-model="password" required :maxlength="max_pass_length">
+                    </div>
+
+                    <button type="submit">Register</button>
+                </form>
+
+                <div v-if="error.length > 0"> {{ error }}</div>
+            </div>
+
+            <div class="tweetBox" v-else>
+                <h2>Welcome {{ userData.name }} write your first Tweet</h2>
+                <form v-on:submit.prevent="sendTweet">
+                    <div class="form_group">
+                        <label for="tweet">
+                            Send your tweet
+                            <span>{{ tweetMsg.length + '/' + max_tweet }}</span>
+                        </label>
+                        <textarea id="tweet" cols="30" rows="10" v-model="tweetMsg" maxlength="200"></textarea>
+                    </div>
+                    <button type="submit">Tweet</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Show All Tweets -->
+        <div class="card_tweets">
+            <section class="tweets" v-if="tweets.length > 0">
+                <h2>Tweets</h2>
+                <tweet-message v-for="(tweet, index) in tweets" v-bind:tweet="tweet" :key="index" @remove-tweet="removeTweet(index)"></tweet-message>
+            </section>
+            <div v-else>No tweets to show</div>
+        </div>
+    </div>
+    <script src="./main.js "></script>
+</body>
+
+</html>
